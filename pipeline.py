@@ -27,7 +27,10 @@ def main(img_path):
         image_ft = image_ft.to(device)
         with torch.no_grad():
             out, _ = model.beam_search(image_ft, 20, text_field.vocab.stoi['<eos>'], 5, out_size=1)
+            print('out len', out.shape)
+            print('out ', out)
         caps_gen = text_field.decode(out, join_words=False)
+        print(caps_gen)
         return caps_gen
 
 

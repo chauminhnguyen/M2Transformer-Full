@@ -317,32 +317,36 @@ def main(args):
     keep_fts = pooled_feat[keep_boxes]
     print('pred_boxes: {}, pooled_feat: {}'.format(boxes.shape, keep_fts.shape))
     objects = torch.argmax(scores[keep_boxes][:, 1:], dim=1)
+    print('objects len', len(objects))
 
     # return keep_fts
 
     import pickle
     with open(args.ft_path, 'wb') as f:
         pickle.dump(keep_fts, f)
-    #
-    # for i in range(len(keep_boxes)):
-    #     kind = objects[i] + 1
-    #     bbox = boxes[i, kind * 4: (kind + 1) * 4]
-    #     # bbox = boxes[i]
-    #     if bbox[0] == 0:
-    #         bbox[0] = 1
-    #     if bbox[1] == 0:
-    #         bbox[1] = 1
-    #     cls = classes[objects[i] + 1]
-    #     plt.gca().add_patch(
-    #         plt.Rectangle((bbox[0], bbox[1]),
-    #                       bbox[2] - bbox[0],
-    #                       bbox[3] - bbox[1], fill=False,
-    #                       edgecolor='red', linewidth=2, alpha=0.5)
-    #     )
-    #     plt.gca().text(bbox[0], bbox[1] - 2,
-    #                    '%s' % cls,
-    #                    bbox=dict(facecolor='blue', alpha=0.5),
-    #                    fontsize=10, color='white')
-    # #   plt.show()
-    # plt.savefig('foo.png')
-    # print('boxes=%d' % (len(keep_boxes)))
+
+    clses = []
+    for i in range(len(keep_boxes)):
+        kind = objects[i] + 1
+        bbox = boxes[i, kind * 4: (kind + 1) * 4]
+        # bbox = boxes[i]
+        if bbox[0] == 0:
+            bbox[0] = 1
+        if bbox[1] == 0:
+            bbox[1] = 1
+        cls = classes[objects[i] + 1]
+        clses.append(cls)
+        plt.gca().add_patch(
+            plt.Rectangle((bbox[0], bbox[1]),
+                          bbox[2] - bbox[0],
+                          bbox[3] - bbox[1], fill=False,
+                          edgecolor='red', linewidth=2, alpha=0.5)
+        )
+        plt.gca().text(bbox[0], bbox[1] - 2,
+                       '%s' % cls,
+                       bbox=dict(facecolor='blue', alpha=0.5),
+                       fontsize=10, color='white')
+    #   plt.show()
+    print(clses)
+    plt.savefig('foo.png')
+    print('boxes=%d' % (len(keep_boxes)))

@@ -320,7 +320,7 @@ def main(args):
     print('objects len', len(objects))
 
     # return keep_fts
-
+    '''
     import pickle
     with open(args.ft_path, 'wb') as f:
         pickle.dump(keep_fts, f)
@@ -350,3 +350,4 @@ def main(args):
     print(clses)
     plt.savefig('foo.png')
     print('boxes=%d' % (len(keep_boxes)))
+    '''
